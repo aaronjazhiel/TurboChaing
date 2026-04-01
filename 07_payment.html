@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TurboChain — Confirmar Pago</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .top-bar { display:flex; align-items:center; gap:12px; padding:18px 24px 0; }
+  .back-btn { width:38px;height:38px;background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer; }
+  .back-btn svg { width:18px; height:18px; color:var(--text); }
+  .section-label { font-size:12px; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+
+  .order-pill { display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:100px; padding:10px 16px; margin:16px 0; box-shadow:var(--shadow-sm); }
+  .order-pill svg { width:18px; height:18px; color:var(--accent); }
+  .pill-text { font-size:13px; font-weight:600; flex:1; }
+  .pill-amount { font-weight:700; font-size:15px; color:var(--accent); }
+
+  .token-selected { display:flex; align-items:center; gap:10px; background:var(--accent-l); border:1px solid #C6E9D6; border-radius:var(--r-md); padding:14px 16px; margin-bottom:16px; }
+  .token-selected .ts-dot { width:12px; height:12px; border-radius:50%; background:#2775CA; flex-shrink:0; }
+  .token-selected .ts-info { flex:1; }
+  .token-selected .ts-name { font-weight:700; font-size:14px; }
+  .token-selected .ts-bal { font-size:11px; color:var(--accent2); }
+  .token-selected .ts-amount { font-weight:800; font-size:18px; color:var(--accent2); }
+
+  .tx-detail { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:18px; margin-bottom:16px; box-shadow:var(--shadow-sm); }
+  .tx-detail-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
+  .tx-detail-row:last-child { border-bottom:none; }
+  .tx-detail-label { font-size:12px; color:var(--muted); }
+  .tx-detail-val { font-size:13px; font-weight:600; }
+  .tx-detail-mono { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); }
+
+  .contract-box { background:var(--sky-l); border:1px solid #B8D9EC; border-radius:var(--r-sm); padding:14px 16px; margin-bottom:16px; }
+  .contract-title { font-size:11px; font-weight:700; color:var(--sky); letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .contract-title svg { width:14px; height:14px; }
+  .contract-addr { font-family:'JetBrains Mono',monospace; font-size:11px; color:#0A5F8A; word-break:break-all; }
+
+  .wallets-row { display:flex; gap:8px; margin-bottom:20px; }
+  .wallet-box { flex:1; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-sm); padding:12px; box-shadow:var(--shadow-sm); }
+  .wallet-box-label { font-size:10px; color:var(--muted); margin-bottom:4px; text-transform:uppercase; letter-spacing:.04em; font-weight:600; }
+  .wallet-box-addr { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text2); }
+  .wallet-arrow { display:flex; align-items:center; color:var(--accent); font-size:20px; font-weight:700; }
+
+  .confirm-btn { width:100%; padding:18px; background:var(--accent); color:#fff; border:none; border-radius:var(--r-md); font-family:'Inter',sans-serif; font-weight:800; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .confirm-btn svg { width:20px; height:20px; }
+  .confirm-btn:active { transform:scale(.98); opacity:.9; }
+
+  .escrow-note { display:flex; justify-content:center; align-items:center; gap:6px; font-size:11px; color:var(--muted); margin-top:12px; text-align:center; }
+  .escrow-note svg { width:14px; height:14px; flex-shrink:0; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><div class="status-icons"><div class="signal"><span></span><span></span><span></span></div><span>WiFi</span></div></div>
+
+  <div class="top-bar">
+    <div class="back-btn" onclick="location.href='06_new_order.html'"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></div>
+    <div style="font-weight:700;font-size:17px">Confirmar pago</div>
+  </div>
+
+  <div class="screen">
+    <div class="order-pill">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+      <span class="pill-text">XA-AMX · 12,400 L Turbosina</span>
+      <span class="pill-amount">8,680 USDC</span>
+    </div>
+
+    <div class="section-label">Token de pago</div>
+    <div class="token-selected">
+      <div class="ts-dot"></div>
+      <div class="ts-info"><div class="ts-name">USDC (USD Coin)</div><div class="ts-bal">Saldo: 24,580 USDC disponibles</div></div>
+      <div class="ts-amount">8,680</div>
+    </div>
+
+    <div class="section-label">Detalle de transacción</div>
+    <div class="tx-detail">
+      <div class="tx-detail-row"><span class="tx-detail-label">Turbosina Jet A-1</span><span class="tx-detail-val">12,400 litros</span></div>
+      <div class="tx-detail-row"><span class="tx-detail-label">Precio por litro</span><span class="tx-detail-val">$0.70 USDC/L</span></div>
+      <div class="tx-detail-row"><span class="tx-detail-label">Subtotal</span><span class="tx-detail-val">8,680.00 USDC</span></div>
+      <div class="tx-detail-row"><span class="tx-detail-label">Gas de red (Polygon)</span><span class="tx-detail-val">~0.003 MATIC</span></div>
+      <div class="tx-detail-row"><span class="tx-detail-label">Red</span><span class="tx-detail-val">Polygon (MATIC)</span></div>
+      <div class="tx-detail-row"><span class="tx-detail-label">Tiempo estimado</span><span class="tx-detail-val" style="color:var(--accent)">~2 segundos</span></div>
+    </div>
+
+    <div class="contract-box">
+      <div class="contract-title"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg> Smart Contract verificado</div>
+      <div class="contract-addr">0x1a2B3c4D5e6F7a8B9c0D1e2F3a4B5c6D7e8F9a0B</div>
+    </div>
+
+    <div class="wallets-row">
+      <div class="wallet-box">
+        <div class="wallet-box-label">Desde (tu wallet)</div>
+        <div class="wallet-box-addr">0x3F4a...8aB2</div>
+      </div>
+      <div class="wallet-arrow">→</div>
+      <div class="wallet-box">
+        <div class="wallet-box-label">Hacia (Pipa T-042)</div>
+        <div class="wallet-box-addr">0x1a2B...9a0B</div>
+      </div>
+    </div>
+
+    <button class="confirm-btn" onclick="location.href='07b_tx_processing.html'">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.54a4.5 4.5 0 00-6.364-6.364L4.5 8.25"/></svg>
+      Firmar y autorizar carga
+    </button>
+
+    <div class="escrow-note">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+      Tokens en escrow hasta que la pipa confirme la descarga completa
+    </div>
+  </div>
+</div>
+</body>
+</html>

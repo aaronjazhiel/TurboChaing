@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TurboChain — Tokens</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page-title { padding:18px 24px 0; font-weight:800; font-size:24px; }
+
+  .wallet-header { margin:16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:20px; box-shadow:var(--shadow-sm); }
+  .wh-label { font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+  .wh-addr { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .wh-addr svg { width:14px; height:14px; cursor:pointer; color:var(--muted); }
+
+  .token-balances { display:flex; flex-direction:column; gap:10px; }
+  .token-bal-row { display:flex; align-items:center; gap:12px; background:var(--surface2); border-radius:12px; padding:12px 14px; }
+  .tb-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .tb-info { flex:1; }
+  .tb-name { font-weight:600; font-size:13px; margin-bottom:1px; }
+  .tb-network { font-size:10px; color:var(--muted); }
+  .tb-amount { text-align:right; }
+  .tb-val { font-weight:700; font-size:15px; }
+  .tb-usd { font-size:10px; color:var(--muted); }
+
+  .wallet-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px; }
+  .wa-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; box-shadow:var(--shadow-sm); }
+  .wa-btn:active { transform:scale(.97); }
+  .wa-btn svg { width:24px; height:24px; }
+  .wa-label { font-size:12px; font-weight:600; }
+
+  .qr-section { margin:0 16px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:20px; text-align:center; box-shadow:var(--shadow-sm); }
+  .qr-title { font-weight:700; font-size:15px; margin-bottom:14px; }
+  .qr-placeholder { width:120px; height:120px; margin:0 auto 14px; background:var(--surface2); border-radius:12px; display:flex; align-items:center; justify-content:center; }
+  .qr-placeholder svg { width:48px; height:48px; color:var(--muted); }
+  .qr-addr { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); word-break:break-all; }
+
+  .tx-section { padding:0 16px; }
+  .tx-section-title { font-weight:700; font-size:16px; margin-bottom:12px; }
+  .net-chips { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; }
+  .net-chips::-webkit-scrollbar { display:none; }
+  .net-chip { flex-shrink:0; padding:7px 14px; border-radius:100px; font-size:12px; font-weight:600; border:1.5px solid var(--border); cursor:pointer; color:var(--muted); }
+  .net-chip.active { border-color:var(--accent); color:var(--accent); background:var(--accent-l); }
+  .tx-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .tx-item:last-child { border-bottom:none; }
+  .tx-inf { flex:1; }
+  .tx-nm { font-size:13px; font-weight:600; margin-bottom:2px; }
+  .tx-dt { font-size:11px; color:var(--muted); }
+  .tx-am { font-weight:700; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><div class="status-icons"><div class="signal"><span></span><span></span><span></span></div><span>WiFi</span></div></div>
+
+  <div class="page-title">Mis Tokens</div>
+
+  <div class="wallet-header">
+    <div class="wh-label">Wallet conectada</div>
+    <div class="wh-addr">
+      0x3F4a8b9c2d1e5f6a7b8c...8aB2
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"/></svg>
+    </div>
+    <div class="token-balances">
+      <div class="token-bal-row">
+        <div class="tb-dot" style="background:#2775CA"></div>
+        <div class="tb-info"><div class="tb-name">USD Coin</div><div class="tb-network">Polygon</div></div>
+        <div class="tb-amount"><div class="tb-val">24,580</div><div class="tb-usd">USDC</div></div>
+      </div>
+      <div class="token-bal-row">
+        <div class="tb-dot" style="background:var(--accent)"></div>
+        <div class="tb-info"><div class="tb-name">TurboChain Token</div><div class="tb-network">Polygon</div></div>
+        <div class="tb-amount"><div class="tb-val">12,400</div><div class="tb-usd">TURBO</div></div>
+      </div>
+      <div class="token-bal-row">
+        <div class="tb-dot" style="background:#8247E5"></div>
+        <div class="tb-info"><div class="tb-name">MATIC</div><div class="tb-network">Polygon</div></div>
+        <div class="tb-amount"><div class="tb-val">4.82</div><div class="tb-usd">≈ $2.94 USD</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wallet-actions">
+    <div class="wa-btn" style="color:var(--accent)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg><span class="wa-label">Enviar</span></div>
+    <div class="wa-btn" style="color:var(--sky)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5l-15 15m0 0h11.25m-11.25 0V8.25"/></svg><span class="wa-label">Recibir</span></div>
+    <div class="wa-btn" style="color:var(--fuel)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg><span class="wa-label">Swap</span></div>
+    <div class="wa-btn" style="color:var(--accent2)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="wa-label">Comprar USDC</span></div>
+  </div>
+
+  <div class="qr-section">
+    <div class="qr-title">Recibir tokens</div>
+    <div class="qr-placeholder"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zm0 9.75c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zm9.75-9.75c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"/></svg></div>
+    <div class="qr-addr">0x3F4a8b9c2d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9B2</div>
+  </div>
+
+  <div class="tx-section">
+    <div class="tx-section-title">Historial on-chain</div>
+    <div class="net-chips">
+      <div class="net-chip active">Todas</div>
+      <div class="net-chip">USDC</div>
+      <div class="net-chip">TURBO</div>
+      <div class="net-chip">MATIC</div>
+    </div>
+    <div class="tx-item">
+      <div class="icon icon-danger icon-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg></div>
+      <div class="tx-inf"><div class="tx-nm">Carga XA-AMX · 12,400 L</div><div class="tx-dt">Hoy 9:41 · Polygon · 2.1s</div></div>
+      <span class="tx-am" style="color:var(--danger)">−8,680 USDC</span>
+    </div>
+    <div class="tx-item">
+      <div class="icon icon-accent icon-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5l-15 15m0 0h11.25m-11.25 0V8.25"/></svg></div>
+      <div class="tx-inf"><div class="tx-nm">Fondeo de tokens</div><div class="tx-dt">Ayer · Polygon · 1.8s</div></div>
+      <span class="tx-am" style="color:var(--accent)">+50,000 USDC</span>
+    </div>
+    <div class="tx-item">
+      <div class="icon icon-sky icon-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg></div>
+      <div class="tx-inf"><div class="tx-nm">Swap USDC → TURBO</div><div class="tx-dt">Hace 2 días · Polygon · 3.0s</div></div>
+      <span class="tx-am" style="color:var(--sky)">+12,400 TURBO</span>
+    </div>
+  </div>
+
+  <div style="height:16px"></div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="location.href='05_home.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"/></svg></span>Inicio</div>
+    <div class="nav-item" onclick="location.href='06_new_order.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg></span>Cargar</div>
+    <div class="nav-item" onclick="location.href='09_orders.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg></span>Cargas</div>
+    <div class="nav-item active"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375"/></svg></span>Tokens</div>
+    <div class="nav-item"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg></span>Perfil</div>
+  </div>
+</div>
+</body>
+</html>

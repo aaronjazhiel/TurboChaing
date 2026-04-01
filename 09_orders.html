@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TurboChain — Mis Cargas</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page-title { padding:18px 24px 0; font-weight:800; font-size:24px; margin-bottom:16px; }
+  .tab-bar { padding:0 24px 16px; }
+
+  /* Live fuel gauge */
+  .live-card {
+    margin:0 24px 16px; background:var(--surface); border:1px solid var(--accent);
+    border-radius:var(--r-lg); padding:20px; box-shadow:0 4px 16px rgba(0,132,61,.1); position:relative;
+  }
+  .live-badge { position:absolute; top:16px; right:16px; }
+  .live-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .live-header svg { width:20px; height:20px; color:var(--accent); }
+  .live-tail { font-weight:700; font-size:16px; }
+  .live-type { font-size:12px; color:var(--muted); margin-left:4px; }
+
+  /* Fuel gauge */
+  .fuel-gauge { margin-bottom:16px; }
+  .gauge-bar { height:10px; background:var(--surface2); border-radius:100px; overflow:hidden; margin-bottom:8px; }
+  .gauge-fill { height:100%; background:linear-gradient(90deg,var(--accent2),var(--accent)); border-radius:100px; transition:width .5s ease; }
+  .gauge-labels { display:flex; justify-content:space-between; font-size:12px; }
+  .gauge-current { font-weight:700; color:var(--accent); }
+  .gauge-total { color:var(--muted); }
+
+  .live-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:16px; }
+  .stat-box { background:var(--surface2); border-radius:10px; padding:10px; text-align:center; }
+  .stat-value { font-weight:700; font-size:15px; margin-bottom:2px; }
+  .stat-label { font-size:10px; color:var(--muted); }
+
+  .live-pipa { display:flex; align-items:center; gap:10px; background:var(--surface2); border-radius:12px; padding:10px 14px; }
+  .live-pipa svg { width:20px; height:20px; color:var(--fuel); }
+  .pipa-info { flex:1; }
+  .pipa-name { font-weight:600; font-size:13px; }
+  .pipa-detail { font-size:11px; color:var(--muted); }
+  .pipa-status { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--accent); font-weight:600; }
+  .pipa-status-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:blink 1.2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* Completed cards */
+  .cargas-list { padding:0 24px; display:flex; flex-direction:column; gap:12px; }
+  .carga-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:18px; box-shadow:var(--shadow-sm); }
+  .carga-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+  .carga-id { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:3px; }
+  .carga-aircraft { font-weight:700; font-size:16px; display:flex; align-items:center; gap:6px; }
+  .carga-aircraft svg { width:16px; height:16px; color:var(--accent); }
+
+  .carga-details { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .carga-tag { display:inline-flex; align-items:center; gap:4px; background:var(--surface2); border-radius:100px; padding:4px 10px; font-size:11px; font-weight:600; color:var(--muted); }
+  .carga-tag svg { width:12px; height:12px; }
+
+  .carga-bottom { display:flex; justify-content:space-between; align-items:center; }
+  .carga-tokens-label { font-size:10px; color:var(--muted); margin-bottom:2px; }
+  .carga-tokens { font-size:13px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:4px; }
+  .carga-tokens svg { width:14px; height:14px; }
+  .carga-hash { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><div class="status-icons"><div class="signal"><span></span><span></span><span></span></div><span>WiFi</span></div></div>
+
+  <div class="page-title">Mis Cargas</div>
+
+  <div class="tab-bar">
+    <div class="segment">
+      <button class="seg-btn active">En curso</button>
+      <button class="seg-btn">Completadas</button>
+    </div>
+  </div>
+
+  <!-- LIVE: Fuel loading in progress -->
+  <div class="live-card">
+    <div class="live-badge"><div class="badge badge-warning">Cargando</div></div>
+
+    <div class="live-header">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+      <span class="live-tail">XA-AMX</span>
+      <span class="live-type">· B737-800</span>
+    </div>
+
+    <!-- Real-time fuel gauge -->
+    <div class="fuel-gauge">
+      <div class="gauge-bar"><div class="gauge-fill" style="width:62%"></div></div>
+      <div class="gauge-labels">
+        <span class="gauge-current">7,688 L cargados</span>
+        <span class="gauge-total">de 12,400 L</span>
+      </div>
+    </div>
+
+    <div class="live-stats">
+      <div class="stat-box">
+        <div class="stat-value" style="color:var(--accent)">62%</div>
+        <div class="stat-label">Progreso</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">~8 min</div>
+        <div class="stat-label">Restante</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color:var(--sky)">8,680</div>
+        <div class="stat-label">USDC a debitar</div>
+      </div>
+    </div>
+
+    <!-- Pipa info -->
+    <div class="live-pipa">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>
+      <div class="pipa-info">
+        <div class="pipa-name">Pipa T-042</div>
+        <div class="pipa-detail">Pista 05R · AICM · Jet A-1</div>
+      </div>
+      <div class="pipa-status"><div class="pipa-status-dot"></div> Conectada</div>
+    </div>
+  </div>
+
+  <!-- Completed / upcoming -->
+  <div class="cargas-list">
+
+    <!-- Programmed -->
+    <div class="carga-card">
+      <div class="carga-top">
+        <div>
+          <div class="carga-id">#TC-20240401-002</div>
+          <div class="carga-aircraft">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+            XA-VLR · A320neo
+          </div>
+        </div>
+        <div class="badge badge-info">Programada</div>
+      </div>
+      <div class="carga-details">
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375"/></svg> 18,600 L</div>
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5"/></svg> Hoy 14:00</div>
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Gate B4</div>
+      </div>
+      <div class="carga-bottom">
+        <div>
+          <div class="carga-tokens-label">Tokens a debitar</div>
+          <div class="carga-tokens">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375"/></svg>
+            13,020 USDC
+          </div>
+        </div>
+        <div class="badge badge-info">Pipa T-018 asignada</div>
+      </div>
+    </div>
+
+    <!-- Completed -->
+    <div class="carga-card" style="opacity:.75">
+      <div class="carga-top">
+        <div>
+          <div class="carga-id">#TC-20240331-003</div>
+          <div class="carga-aircraft">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+            XA-JBC · E190
+          </div>
+        </div>
+        <div class="badge badge-success">TX confirmada</div>
+      </div>
+      <div class="carga-details">
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375"/></svg> 6,200 L</div>
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5"/></svg> Ayer 16:15</div>
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Pista 23L</div>
+      </div>
+      <div class="carga-bottom">
+        <div>
+          <div class="carga-tokens-label">Tokens debitados</div>
+          <div class="carga-tokens">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            4,340 USDC · on-chain
+          </div>
+        </div>
+        <div class="carga-hash">0xabc...1234</div>
+      </div>
+    </div>
+
+    <!-- Another completed -->
+    <div class="carga-card" style="opacity:.6">
+      <div class="carga-top">
+        <div>
+          <div class="carga-id">#TC-20240330-004</div>
+          <div class="carga-aircraft">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+            XA-AMX · B737-800
+          </div>
+        </div>
+        <div class="badge badge-success">TX confirmada</div>
+      </div>
+      <div class="carga-details">
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375"/></svg> 12,400 L</div>
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5"/></svg> 30 Mar 08:20</div>
+        <div class="carga-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Pista 05R</div>
+      </div>
+      <div class="carga-bottom">
+        <div>
+          <div class="carga-tokens-label">Tokens debitados</div>
+          <div class="carga-tokens">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            8,680 USDC · on-chain
+          </div>
+        </div>
+        <div class="carga-hash">0x789...9abc</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:16px"></div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="location.href='05_home.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"/></svg></span>Inicio</div>
+    <div class="nav-item" onclick="location.href='06_new_order.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg></span>Cargar</div>
+    <div class="nav-item active"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg></span>Cargas</div>
+    <div class="nav-item" onclick="location.href='08_wallet.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375"/></svg></span>Tokens</div>
+    <div class="nav-item"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg></span>Perfil</div>
+  </div>
+</div>
+</body>
+</html>

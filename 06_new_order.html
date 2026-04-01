@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TurboChain — Nueva Carga</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .top-bar { display:flex; align-items:center; gap:12px; padding:18px 24px 0; }
+  .back-btn { width:38px;height:38px;background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer; }
+  .back-btn svg { width:18px; height:18px; color:var(--text); }
+  .section-label { font-size:12px; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+
+  /* Aircraft selector */
+  .aircraft-cards { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+  .aircraft-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-md); padding:16px; text-align:center; cursor:pointer; box-shadow:var(--shadow-sm); }
+  .aircraft-card.selected { border-color:var(--accent); background:#F0FAF5; }
+  .aircraft-card svg { width:28px; height:28px; margin-bottom:6px; }
+  .aircraft-card.selected svg { color:var(--accent); }
+  .ac-tail { font-weight:700; font-size:15px; margin-bottom:2px; }
+  .ac-type { font-size:11px; color:var(--muted); }
+
+  /* Liters control */
+  .liters-control { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:6px; margin-bottom:8px; box-shadow:var(--shadow-sm); }
+  .liters-btn { width:44px; height:44px; border-radius:12px; background:var(--surface2); border:none; color:var(--text); font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .liters-value { font-weight:800; font-size:28px; }
+  .liters-unit { font-size:13px; font-weight:400; color:var(--muted); margin-left:4px; }
+  .liters-presets { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .liters-preset { padding:7px 12px; background:var(--surface); border:1px solid var(--border); border-radius:100px; font-size:12px; font-weight:600; cursor:pointer; color:var(--muted); }
+  .liters-preset.active { border-color:var(--accent); color:var(--accent); background:#F0FAF5; }
+
+  /* Position */
+  .position-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow-sm); }
+  .position-card svg { width:20px; height:20px; color:var(--accent); flex-shrink:0; }
+  .pos-title { font-weight:600; font-size:13px; margin-bottom:2px; }
+  .pos-text { font-size:12px; color:var(--muted); }
+  .pos-change { font-size:12px; color:var(--accent); margin-left:auto; font-weight:500; cursor:pointer; }
+
+  /* Token selector */
+  .token-selector { display:flex; gap:8px; margin-bottom:20px; }
+  .token-opt { flex:1; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-md); padding:14px 10px; text-align:center; cursor:pointer; box-shadow:var(--shadow-sm); }
+  .token-opt.selected { border-color:var(--accent); background:#F0FAF5; }
+  .token-dot { width:12px; height:12px; border-radius:50%; margin:0 auto 6px; }
+  .token-sym { font-weight:700; font-size:13px; margin-bottom:2px; }
+  .token-opt.selected .token-sym { color:var(--accent); }
+  .token-bal { font-size:10px; color:var(--muted); }
+
+  /* Price summary */
+  .price-summary { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-bottom:20px; box-shadow:var(--shadow-sm); }
+  .price-row { display:flex; justify-content:space-between; padding:5px 0; font-size:13px; }
+  .price-row .label { color:var(--muted); }
+  .price-row.total { border-top:1px solid var(--border); margin-top:8px; padding-top:12px; }
+  .price-row.total .label { font-weight:700; color:var(--text); font-size:14px; }
+  .price-row.total .value { font-weight:800; font-size:18px; color:var(--accent); }
+
+  .auto-note { display:flex; align-items:center; gap:8px; background:var(--accent-l); border:1px solid #C6E9D6; border-radius:var(--r-sm); padding:12px 14px; margin-bottom:20px; }
+  .auto-note svg { width:18px; height:18px; color:var(--accent); flex-shrink:0; }
+  .auto-note span { font-size:12px; color:var(--accent2); line-height:1.4; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><div class="status-icons"><div class="signal"><span></span><span></span><span></span></div><span>WiFi</span></div></div>
+
+  <div class="top-bar">
+    <div class="back-btn" onclick="location.href='05_home.html'"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></div>
+    <div style="font-weight:700;font-size:17px">Nueva carga de turbosina</div>
+  </div>
+
+  <div class="screen">
+    <div class="section-label">Aeronave</div>
+    <div class="aircraft-cards">
+      <div class="aircraft-card selected">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+        <div class="ac-tail">XA-AMX</div>
+        <div class="ac-type">Boeing 737-800</div>
+      </div>
+      <div class="aircraft-card">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+        <div class="ac-tail">XA-VLR</div>
+        <div class="ac-type">Airbus A320neo</div>
+      </div>
+    </div>
+
+    <div class="section-label">Litros de turbosina</div>
+    <div class="liters-control">
+      <button class="liters-btn">−</button>
+      <div><span class="liters-value">12,400</span><span class="liters-unit">L</span></div>
+      <button class="liters-btn">+</button>
+    </div>
+    <div class="liters-presets">
+      <div class="liters-preset">5,000 L</div>
+      <div class="liters-preset active">12,400 L</div>
+      <div class="liters-preset">18,600 L</div>
+      <div class="liters-preset">24,000 L</div>
+    </div>
+
+    <div class="section-label">Posición en pista</div>
+    <div class="position-card">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+      <div style="flex:1">
+        <div class="pos-title">Pista 05R — AICM</div>
+        <div class="pos-text">Pipa T-042 asignada · Turbosina Jet A-1</div>
+      </div>
+      <span class="pos-change">Cambiar</span>
+    </div>
+
+    <div class="section-label">Pagar con token</div>
+    <div class="token-selector">
+      <div class="token-opt selected">
+        <div class="token-dot" style="background:#2775CA"></div>
+        <div class="token-sym">USDC</div>
+        <div class="token-bal">24,580 disp.</div>
+      </div>
+      <div class="token-opt">
+        <div class="token-dot" style="background:var(--accent)"></div>
+        <div class="token-sym">TURBO</div>
+        <div class="token-bal">12,400 disp.</div>
+      </div>
+      <div class="token-opt">
+        <div class="token-dot" style="background:#627EEA"></div>
+        <div class="token-sym">ETH</div>
+        <div class="token-bal">2.41 disp.</div>
+      </div>
+    </div>
+
+    <div class="price-summary">
+      <div class="price-row"><span class="label">12,400 L × $0.70 USD/L</span><span>8,680.00 USDC</span></div>
+      <div class="price-row"><span class="label">Gas de red (Polygon)</span><span>~0.003 MATIC</span></div>
+      <div class="price-row"><span class="label">Comisión smart contract</span><span>0.00 USDC</span></div>
+      <div class="price-row total">
+        <span class="label">Total a debitar</span>
+        <span class="value">8,680 USDC</span>
+      </div>
+    </div>
+
+    <div class="auto-note">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+      <span>Los tokens se debitan automáticamente cuando la pipa inicia la descarga de combustible</span>
+    </div>
+
+    <button class="btn-primary" onclick="location.href='07_payment.html'">Autorizar carga</button>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="location.href='05_home.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"/></svg></span>Inicio</div>
+    <div class="nav-item active"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg></span>Cargar</div>
+    <div class="nav-item" onclick="location.href='09_orders.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg></span>Cargas</div>
+    <div class="nav-item" onclick="location.href='08_wallet.html'"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375"/></svg></span>Tokens</div>
+    <div class="nav-item"><span class="nav-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg></span>Perfil</div>
+  </div>
+</div>
+</body>
+</html>

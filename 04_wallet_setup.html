@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TurboChain — Wallet Setup</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .top-bar { display:flex; align-items:center; gap:12px; padding:18px 24px 0; }
+  .back-btn { width:38px;height:38px;background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer; }
+  .back-btn svg { width:18px; height:18px; color:var(--text); }
+  .steps-bar { display:flex; justify-content:center; padding:16px 0 4px; }
+  .wallet-hero { text-align:center; padding:24px 0 16px; }
+  .wallet-hero-icon { margin:0 auto 16px; }
+  .wallet-hero-icon svg { width:48px; height:48px; color:var(--accent); }
+  .hero-title { font-weight:800; font-size:22px; margin-bottom:8px; }
+  .hero-sub { font-size:13px; color:var(--muted); line-height:1.6; padding:0 10px; }
+  .wallet-options { display:flex; flex-direction:column; gap:10px; margin:20px 0; }
+  .wallet-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-md); padding:16px 18px; display:flex; align-items:center; gap:14px; cursor:pointer; position:relative; box-shadow:var(--shadow-sm); }
+  .wallet-card.selected { border-color:var(--accent); background:#F0FAF5; }
+  .wallet-card.selected::after { content:''; position:absolute; top:12px; right:14px; width:20px; height:20px; background:var(--accent); border-radius:50%; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4.5 12.75l6 6 9-13.5'/%3E%3C/svg%3E"); background-size:12px; background-repeat:no-repeat; background-position:center; }
+  .wc-logo { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .wc-logo svg { width:24px; height:24px; color:#fff; }
+  .wc-name { font-weight:700; font-size:15px; margin-bottom:2px; }
+  .wc-desc { font-size:12px; color:var(--muted); }
+  .wc-tag { position:absolute; top:10px; right:14px; background:var(--accent-l); color:var(--accent); font-size:10px; font-weight:700; padding:3px 8px; border-radius:100px; }
+  .info-box { background:var(--sky-l); border:1px solid #B8D9EC; border-radius:var(--r-sm); padding:14px 16px; display:flex; gap:10px; margin-bottom:20px; }
+  .info-box svg { width:18px; height:18px; color:var(--sky); flex-shrink:0; margin-top:1px; }
+  .info-box .info-text { font-size:12px; color:#0A5F8A; line-height:1.5; }
+  .network-row { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-sm); padding:14px 18px; margin-bottom:16px; box-shadow:var(--shadow-sm); }
+  .network-label { font-size:12px; color:var(--muted); margin-bottom:2px; }
+  .network-name { font-weight:600; font-size:14px; display:flex; align-items:center; gap:6px; }
+  .net-dot { width:8px;height:8px;border-radius:50%;background:var(--accent); }
+  .network-change { font-size:12px; color:var(--accent); cursor:pointer; font-weight:500; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><div class="status-icons"><div class="signal"><span></span><span></span><span></span></div><span>WiFi</span></div></div>
+
+  <div class="top-bar">
+    <div class="back-btn" onclick="history.back()"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></div>
+    <div style="font-weight:700;font-size:17px">Conectar wallet</div>
+  </div>
+  <div class="steps-bar"><div class="steps"><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div></div></div>
+
+  <div class="screen">
+    <div class="wallet-hero">
+      <div class="wallet-hero-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 110-6h.75A2.25 2.25 0 0118 6M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M3 16.5V6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75v9.75M3 16.5h18"/></svg></div>
+      <div class="hero-title">Conecta tu wallet</div>
+      <div class="hero-sub">Necesitas una wallet para pagar turbosina con tokens. Los fondos se debitan automáticamente al cargar combustible.</div>
+    </div>
+
+    <div class="network-row">
+      <div><div class="network-label">Red blockchain</div><div class="network-name"><span class="net-dot"></span> Polygon (MATIC)</div></div>
+      <span class="network-change">Cambiar ›</span>
+    </div>
+
+    <div class="wallet-options">
+      <div class="wallet-card selected">
+        <div class="wc-logo" style="background:linear-gradient(135deg,#F6851B,#E2761B)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 110-6h.75"/></svg></div>
+        <div><div class="wc-name">MetaMask</div><div class="wc-desc">La wallet más popular</div></div>
+        <div class="wc-tag">Popular</div>
+      </div>
+      <div class="wallet-card">
+        <div class="wc-logo" style="background:linear-gradient(135deg,#6366F1,#4338CA)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5z"/></svg></div>
+        <div><div class="wc-name">WalletConnect</div><div class="wc-desc">Conecta con QR</div></div>
+      </div>
+      <div class="wallet-card">
+        <div class="wc-logo" style="background:linear-gradient(135deg,#2563EB,#1D4ED8)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6"/></svg></div>
+        <div><div class="wc-name">Coinbase Wallet</div><div class="wc-desc">Fácil para nuevos en crypto</div></div>
+      </div>
+      <div class="wallet-card">
+        <div class="wc-logo" style="background:linear-gradient(135deg,#6B7280,#4B5563)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg></div>
+        <div><div class="wc-name">Crear nueva wallet</div><div class="wc-desc">Te guiamos paso a paso</div></div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+      <span class="info-text">Tu clave privada nunca se comparte. Tú controlas tus fondos en todo momento.</span>
+    </div>
+
+    <button class="btn-primary" onclick="location.href='05_home.html'">Conectar MetaMask</button>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TurboChain — Splash</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .splash { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 32px; text-align:center; }
+  .logo-wrap { margin-bottom:32px; animation:fadeUp .6s ease both; }
+  .logo-icon {
+    width:80px; height:80px; background:linear-gradient(135deg,var(--accent2),var(--accent));
+    border-radius:24px; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 12px 40px rgba(0,132,61,.25); position:relative;
+  }
+  .logo-icon svg { width:40px; height:40px; color:#fff; }
+  .logo-badge {
+    position:absolute; bottom:-4px; right:-4px; width:26px; height:26px;
+    background:var(--sky); border-radius:50%; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 3px var(--bg);
+  }
+  .logo-badge svg { width:14px; height:14px; color:#fff; }
+  .app-name { font-weight:800; font-size:34px; letter-spacing:-.5px; color:var(--text); margin-bottom:4px; animation:fadeUp .6s .1s ease both; }
+  .app-tagline { font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; font-weight:500; animation:fadeUp .6s .15s ease both; }
+  .features { display:flex; flex-direction:column; gap:10px; width:100%; margin:40px 0; animation:fadeUp .6s .25s ease both; }
+  .feature-row { display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-sm); padding:14px 16px; text-align:left; box-shadow:var(--shadow-sm); }
+  .feature-title { font-weight:600; font-size:14px; color:var(--text); margin-bottom:2px; }
+  .feature-desc { font-size:12px; color:var(--muted); }
+  .cta-wrap { width:100%; display:flex; flex-direction:column; gap:10px; animation:fadeUp .6s .35s ease both; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><div class="status-icons"><div class="signal"><span></span><span></span><span></span></div><span>WiFi</span></div></div>
+
+  <div class="splash">
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+        <div class="logo-badge"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.54a4.5 4.5 0 00-6.364-6.364L4.5 8.25"/></svg></div>
+      </div>
+    </div>
+
+    <div class="app-name">TurboChain</div>
+    <div class="app-tagline">Turbosina · Tokens · Aviación</div>
+
+    <div class="features">
+      <div class="feature-row">
+        <div class="icon icon-accent">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+        </div>
+        <div>
+          <div class="feature-title">Pago automático en pista</div>
+          <div class="feature-desc">La pipa carga y tus tokens se debitan al instante</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="icon icon-sky">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125v-3.75"/></svg>
+        </div>
+        <div>
+          <div class="feature-title">Tokens USDC y TURBO</div>
+          <div class="feature-desc">Sin intermediarios bancarios, pago directo on-chain</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="icon icon-fuel">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+        </div>
+        <div>
+          <div class="feature-title">Cada litro en blockchain</div>
+          <div class="feature-desc">Trazabilidad inmutable de cada carga de turbosina</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn-primary" onclick="location.href='02_register.html'">Crear cuenta de operador</button>
+      <button class="btn-secondary" onclick="location.href='03_login.html'">Ya tengo cuenta</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
